@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>妹子求n</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
+</head>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>妹子求n</legend>
+</fieldset>
+
+<form class="layui-form">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">产品数量N</label>
+            <div class="layui-input-inline">
+                <input type="text" name="N" lay-verify="required|N" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">每组数量M</label>
+            <div class="layui-input-inline">
+                <input type="text" name="M" lay-verify="required|M" autocomplete="off" class="layui-input" value="">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">方案1比率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="onePercentage" lay-verify="required|onePercentage" autocomplete="off" class="layui-input" value="0.95">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">方案2比率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="twoPercentage" lay-verify="required|twoPercentage" autocomplete="off" class="layui-input" value="0.85">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script src="./layui/layui.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+
+    layui.use(['form'], function(){
+        var form = layui.form;
+        //自定义验证规则
+        form.verify({
+            N: function(value){
+                if(value=='' || value == null || value ==undefined){
+                    return '不能为空';
+                }
+            },
+            M: [
+                /^[1-9]([0-9])*$/,
+                '必须是正整数'
+            ],
+            onePercentage: [
+                /^(1|0(\.\d{1,2})?)$/,
+                '必须是0～1之间的小数'
+            ],
+            twoPercentage: [
+                /^(1|0(\.\d{1,2})?)$/,
+                '必须是0～1之间的小数'
+            ],
+
+        });
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            //console.log(JSON.stringify(data.field));
+            $.ajax({
+                url:'./calculation.php',
+                method:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function(res){
+                    console.log(res);
+                    var data = res.data;
+                    $str ='<div>';
+                    $str +='<p>N1为'+data.groupnum+'</p><p>方案1的X1为'+data.fangan1+'</p><p>方案2的X1为'+data.fangan2+'</p><p>表中坐标'+data.zuobiao+'</p></div>';
+                    if(res.code ==1){
+                        $str+='查方案'+data.result+'得n为'+data.data;
+                        layer.alert($str, {title:res.msg,icon: 6});
+                    }else{
+                        layer.alert($str, {title:res.msg,icon: 5});
+                    }
+                },
+            });
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>
