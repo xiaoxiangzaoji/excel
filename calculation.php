@@ -27,6 +27,9 @@ if(!in_array($N1,$nArray)){
 $data =null;
 $message ='success';
 $code =1;
+if($result_X < 2){
+    $result_X =2;
+}
 if($result==1){
     if(isset($oneData[$N1][$result_X])){
         $data = $oneData[$N1][$result_X];
