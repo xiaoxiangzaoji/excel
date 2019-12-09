@@ -91,9 +91,8 @@
                     console.log(res);
                     var data = res.data;
                     $str ='<div>';
-                    $str +='<p>N1为'+data.groupnum+'</p><p>方案1的X1为'+data.fangan1+'</p><p>方案2的X1为'+data.fangan2+'</p><p>表中坐标'+data.zuobiao+'</p></div>';
+                    $str +='<p>N1为'+data.groupnum+'</p><p>方案1的X1为'+data.fangan1+'</p><p>方案2的X1为'+data.fangan2+'</p><p>方案一坐标'+data.zuobiao1+'</p><p>方案二坐标'+data.zuobiao2+'</p><p>'+data.n1+'</p><p>'+data.n2+'</p></div>';
                     if(res.code ==1){
-                        $str+='查方案'+data.result+'得n为'+data.data;
                         layer.alert($str, {title:res.msg,icon: 6});
                     }else{
                         layer.alert($str, {title:res.msg,icon: 5});
